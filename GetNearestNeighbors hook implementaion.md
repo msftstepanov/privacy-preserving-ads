@@ -118,9 +118,9 @@ Below is a more user-facing guide for those who just need to enable approximate 
 * In your KVS JavaScript UDF, prepare the code to work with embeddings and hook call results.
 * Pass list of embeddings as list of strings into getNearestNeighbors().
 * The system returns data structure containing nearest neighbor results.
-* Usage examples can be found in tests
-* Sample UDFs can be found in `/tools/udf/sample_udf` folder - `microsoft_udf_with_get_nns.js` for `getNearestNeightbors` hook and `udf.js` that supports both KV and ANN
-* upload you UDF usual way (through `/tools/udf/udf_generator` in KVS repo and uploading it to the same folder as `DELTA_\d{16}` file)
+* Usage examples can be found in tests (Key Value Service repo)
+* Sample UDFs can be found in `/tools/udf/sample_udf` folder - `microsoft_udf_with_get_nns.js` for `getNearestNeightbors` hook and `udf.js` that supports both KV and ANN (Key Value Service repo). Content of `microsoft_udf_with_get_nns.js` shown in this document, section 2.3
+* Upload you UDF usual way (through `/tools/udf/udf_generator` in Key Value Service repo and uploading it to the same folder as `DELTA_\d{16}` file)
 
 ### 6. Call KVS from bidding
  ```const fetchAdditionalSignalsResult = fetchAdditionalSignals(jsonRequest);```, where jsonRequest having request to ```SELECTION_KV_SERVER```
@@ -166,7 +166,7 @@ function HandleRequest(executionMetadata, ...input) {
 * Versioning: Keep track of snapshot timestamps (e.g., 2025032514000000). If you upload an older snapshot, it will not replace a newer one.
 * Performance Tuning: Adjust your DiskANN config parameters (see `/tools/microsoft_index_builder/README.md` for details) to balance speed vs. recall.
 * Naming Convention: For clarity, prefix your ANN-related keys to avoid accidental collisions with normal KVS keys (Only if you are using same machines for both KV and ANN purposes)
-* **RIGHT NOW IS NOT SUPPORTED FROM BIDDING SIDE** Sharding - if your indexes are too large, consider deploying several instances of KVS, upload
+* **RIGHT NOW IT IS NOT SUPPORTED IN THE BIDDING SERVICE** Sharding - if your indexes are too large, consider deploying several instances of KVS, upload
 
 # Final Check & Summary
 * Integration: The new getNearestNeighbors hook integrates seamlessly with existing UDF-based read operations by extending the native C++ calls behind the scenes.
