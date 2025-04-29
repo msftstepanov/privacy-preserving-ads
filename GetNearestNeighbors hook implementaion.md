@@ -33,7 +33,7 @@ A new hook function, `getNearestNeighbors`, has been introduced to facilitate ap
 ### 2. Files Inside the Snapshot Container
 * `index` and `index.data`: used by DiskANN to store the index graph.
 * `config.json`: parameters for the ANN index (dimensions, vector types, etc.). Currently, there are only 4 parameters:
-  * vector type – primitive embedding element, single dimension. Coult be signed or unsigned 1-byte integer or signed 4-byte float
+  * vector type – primitive embedding element, single dimension. Could be signed or unsigned 1-byte integer or signed 4-byte float
   * dimension – how many elements of vector type are in each embedding. Example - 32
   * top count – how many results index will produce for a single query. Example - 50
   * query neighbors count – how many results should be found before taking top count as result. Higher value causes more precise search, but bigger latency. Should be not less than top count parameter. Example - 100
@@ -54,9 +54,9 @@ A new hook function, `getNearestNeighbors`, has been introduced to facilitate ap
 **Important**: The user is responsible for ensuring consistency in dimension and data type when calling getNearestNeighbors.
 
 ## 1.5 index_builder.py (Creating Your Own Snapshot)
-A Python script, `index_builder.py`, is provided to generate new snapshot files. It has it's own documentation `tools/microsoft_index_builder/README.md` in KVS repo. To use it, you need:
+A Python script, `index_builder.py`, is provided to generate new snapshot files. It has it's own documentation `tools/microsoft_index_builder/README.md` in KVS repo. This tool is also duplicated in this repo, [index_builder.py](index-generation-script/index_builder.py) and [documentation](index-generation-script/README.md) To use it, you need:
  1. Prepare csv input with embeddings and values for each embedding
- 2. Run index_builder.py with desired parameters
+ 2. Run `index_builder.py` with desired parameters
  3. Find `ANNSNAPSHOT_<timestamp>` (16-digit timestamp) in this folder.
  4. Copy it to the appropriate delta directory mounted for the KVS.
  5. Verification: KVS picks up the new snapshot if it is valid and more recent than the existing snapshot. You can check counters to understand is it successful or not.
@@ -71,7 +71,7 @@ This avoids confusion between normal KVS keys and ANN embedding keys.
 ## 1.7 Counters
 There are 7 of them:
 * **AnnActiveSnapshotCount** - how many snapshots are in memory right now
-* **AnnSnapshotLoadSuccessCount** - increasing every time when new ann snapshot sucessfully loaded
+* **AnnSnapshotLoadSuccessCount** - increasing every time when new ann snapshot successfully loaded
 * **AnnSnapshotLoadErrorCount** - increasing every time when new ann snapshot not loaded because it's invalid
 * **AnnSnapshotLoadExpiredCount** - increasing if there was a try to add snapshot with name timestamp less then current one (important - this counter can not be increased in some cases)
 * **AnnHookTotalKeysCallCount** (noised) - Total number of keys goes to getNearestNeighbors hook calls
@@ -107,8 +107,8 @@ Below is a more user-facing guide for those who just need to enable approximate 
 
 ### 3. Upload the Snapshot:
 * Copy your newly created folder or container to the same location where your KVS expects updates, e.g. a path like `/data/deltas`.
-* Make sure name of new snapshot is greater than previos one
-* **important**: during usage, KVS unpacks ANNSNAPSHOT localy and using aprx. same storage
+* Make sure name of new snapshot is greater than previous one
+* **important**: during usage, KVS unpacks ANNSNAPSHOT locally and using aprx. same storage
 
 ### 4. Validate:
 * The KVS automatically loads the latest valid snapshot at runtime.
@@ -119,7 +119,7 @@ Below is a more user-facing guide for those who just need to enable approximate 
 * Pass list of embeddings as list of strings into getNearestNeighbors().
 * The system returns data structure containing nearest neighbor results.
 * Usage examples can be found in tests (Key Value Service repo)
-* Sample UDFs can be found in `/tools/udf/sample_udf` folder - `microsoft_udf_with_get_nns.js` for `getNearestNeightbors` hook and `udf.js` that supports both KV and ANN (Key Value Service repo). Content of `microsoft_udf_with_get_nns.js` shown in this document, section 2.3
+* Sample UDFs can be found in `/tools/udf/sample_udf` folder - `microsoft_udf_with_get_nns.js` for `getNearestNeighbors` hook and `udf.js` that supports both KV and ANN (Key Value Service repo). Content of `microsoft_udf_with_get_nns.js` shown in this document, section 2.3
 * Upload you UDF usual way (through `/tools/udf/udf_generator` in Key Value Service repo and uploading it to the same folder as `DELTA_\d{16}` file)
 
 ### 6. Call KVS from bidding
